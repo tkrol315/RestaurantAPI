@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Models;
 using System.Collections.Generic;
@@ -18,6 +19,17 @@ namespace RestaurantAPI.Controllers
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        [HttpPost]
+        public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var restaurant = _mapper.Map<Restaurant>(dto);
+            _dbContext.Add(restaurant);
+            _dbContext.SaveChanges();
+            return Created($"/api/restaurant/{restaurant.Id}", null);
         }
 
         [HttpGet]
