@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantAPI.Entities
+namespace RestaurantAPI.Models
 {
-    public class Dish
+    public class CreateDishDto
     {
-        public int Id { get; set; }
-
         [Required]
         public string Name { get; set; }
 
@@ -15,6 +13,5 @@ namespace RestaurantAPI.Entities
         public decimal Price { get; set; }
 
         public int RestaurantId { get; set; }
-        public virtual Restaurant Restaurant { get; set; }
     }
 }

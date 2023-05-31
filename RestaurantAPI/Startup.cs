@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Middleware;
 using RestaurantAPI.services;
+using RestaurantAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace RestaurantAPI
             services.AddScoped<RestaurantSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<IDishService, DishService>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestStopwatchMiddleware>();
             services.AddSwaggerGen();
