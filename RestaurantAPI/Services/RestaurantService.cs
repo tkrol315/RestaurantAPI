@@ -18,7 +18,7 @@ namespace RestaurantAPI.services
     {
         RestaurantDto GetById(int id);
 
-        IEnumerable<RestaurantDto> GetAll();
+        List<RestaurantDto> GetAll();
 
         int Create(CreateRestaurantDto dto);
 
@@ -43,7 +43,7 @@ namespace RestaurantAPI.services
         public void Update(int id, UpdateRestaurantDto dto)
         {
             var restaurant = _dbContext.Restaurants.FirstOrDefault(r => r.Id == id);
-            if (restaurant is null) throw new NotFoundException($"Restaurant with id: {id} not found");
+            if (restaurant == null) throw new NotFoundException("Restaurant not found");
             restaurant.Name = dto.Name;
             restaurant.Description = dto.Description;
             restaurant.HasDelivery = dto.HasDelivery;
@@ -53,7 +53,7 @@ namespace RestaurantAPI.services
         public RestaurantDto GetById(int id)
         {
             var restaurant = _dbContext.Restaurants.Include(r => r.Address).Include(r => r.Dishes).FirstOrDefault(r => r.Id == id);
-            if (restaurant == null) throw new NotFoundException($"Restaurant with id: {id} not found ");
+            if (restaurant == null) throw new NotFoundException("Restaurant not found ");
             var result = _mapper.Map<RestaurantDto>(restaurant);
             return result;
         }
@@ -62,12 +62,12 @@ namespace RestaurantAPI.services
         {
             _logger.LogWarning($"Action DELETE was invoked for Restaurant with id: {id}");
             var restaurant = _dbContext.Restaurants.FirstOrDefault(r => r.Id == id);
-            if (restaurant is null) throw new NotFoundException($"Restaurant with id: {id} not found");
+            if (restaurant == null) throw new NotFoundException("Restaurant not found");
             _dbContext.Remove(restaurant);
             _dbContext.SaveChanges();
         }
 
-        public IEnumerable<RestaurantDto> GetAll()
+        public List<RestaurantDto> GetAll()
         {
             var restuarants = _dbContext.Restaurants.Include(r => r.Address).Include(r => r.Dishes).ToList();
             var restuarantDtos = _mapper.Map<List<RestaurantDto>>(restuarants);
