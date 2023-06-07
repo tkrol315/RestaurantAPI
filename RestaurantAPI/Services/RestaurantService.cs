@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Models;
 using System.Collections.Generic;
