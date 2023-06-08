@@ -11,8 +11,6 @@ namespace RestaurantAPI.Models
         public bool HasDelivery { get; set; }
 
         public string ContactEmail { get; set; }
-
-        [Phone]
         public string ContactNumber { get; set; }
 
         public string City { get; set; }
