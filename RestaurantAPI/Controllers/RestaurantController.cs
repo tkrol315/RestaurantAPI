@@ -9,6 +9,7 @@ using RestaurantAPI.Models;
 using RestaurantAPI.services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace RestaurantAPI.Controllers
 {
@@ -27,7 +28,7 @@ namespace RestaurantAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromRoute] int id, [FromBody] UpdateRestaurantDto dto)
         {
-            _restaurantService.Update(id, dto);
+            _restaurantService.Update(id, dto, User);
             return Ok();
         }
 
@@ -35,14 +36,15 @@ namespace RestaurantAPI.Controllers
         [HttpPost]
         public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
         {
-            int id = _restaurantService.Create(dto);
+            var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            int id = _restaurantService.Create(dto, userId);
             return Created($"/api/restaurant/{id}", null);
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            _restaurantService.Delete(id);
+            _restaurantService.Delete(id, User);
             return NoContent();
         }
 
@@ -54,6 +56,7 @@ namespace RestaurantAPI.Controllers
             return Ok(restaurantsDtos);
         }
 
+        [Authorize(Policy = "AtLeast18")]
         [HttpGet("{id}")]
         public ActionResult<RestaurantDto> Get([FromRoute] int id)
         {
