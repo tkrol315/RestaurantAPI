@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -68,9 +69,11 @@ namespace RestaurantAPI
             {
                 options.AddPolicy("Nationality", builder => builder.RequireClaim("Nationality"));
                 options.AddPolicy("AtLeast18", builder => builder.AddRequirements(new MinimumAgeRequirement(18)));
+                options.AddPolicy("AtLeastTwoRestaurants", builder => builder.AddRequirements(new MinimumRestaurantsAmountRequirement(2)));
             });
             services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, ResourceOpertaionRequirementHandler>();
+            services.AddScoped<IAuthorizationHandler, MinimumRestaurantsAmountRequirementHandler>();
             services.AddControllers().AddFluentValidation();
             services.AddDbContext<RestaurantDbContext>();
             services.AddScoped<RestaurantSeeder>();
@@ -84,6 +87,8 @@ namespace RestaurantAPI
             services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantDtoValidator>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestStopwatchMiddleware>();
+            services.AddScoped<IUserContextService, UserContextService>();
+            services.AddHttpContextAccessor();
             services.AddSwaggerGen();
         }
 
