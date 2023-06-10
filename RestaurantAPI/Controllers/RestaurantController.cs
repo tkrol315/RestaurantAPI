@@ -48,15 +48,13 @@ namespace RestaurantAPI.Controllers
             return NoContent();
         }
 
-        [Authorize(Policy = "AtLeastTwoRestaurants")]
         [HttpGet]
-        public ActionResult<List<RestaurantDto>> GetAll()
+        public ActionResult<PagedResult<RestaurantDto>> GetAll([FromQuery] RestaurantQuery query)
         {
-            var restaurantsDtos = _restaurantService.GetAll();
+            var restaurantsDtos = _restaurantService.GetAll(query);
             return Ok(restaurantsDtos);
         }
 
-        [Authorize(Policy = "AtLeast18")]
         [HttpGet("{id}")]
         public ActionResult<RestaurantDto> Get([FromRoute] int id)
         {

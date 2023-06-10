@@ -68,10 +68,8 @@ namespace RestaurantAPI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Nationality", builder => builder.RequireClaim("Nationality"));
-                options.AddPolicy("AtLeast18", builder => builder.AddRequirements(new MinimumAgeRequirement(18)));
                 options.AddPolicy("AtLeastTwoRestaurants", builder => builder.AddRequirements(new MinimumRestaurantsAmountRequirement(2)));
             });
-            services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, ResourceOpertaionRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, MinimumRestaurantsAmountRequirementHandler>();
             services.AddControllers().AddFluentValidation();
@@ -85,6 +83,7 @@ namespace RestaurantAPI
             services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
             services.AddScoped<IValidator<CreateDishDto>, CreateDishDtoValidator>();
             services.AddScoped<IValidator<CreateRestaurantDto>, CreateRestaurantDtoValidator>();
+            services.AddScoped<IValidator<RestaurantQuery>, RestaurantQueryValidator>();
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestStopwatchMiddleware>();
             services.AddScoped<IUserContextService, UserContextService>();
