@@ -8,7 +8,7 @@ namespace RestaurantAPI.Controllers
 {
     [Route("api/restaurant/{restaurantId}/dish")]
     [ApiController]
-    public class DishController : Controller
+    public class DishController : ControllerBase
     {
         private readonly IDishService _dishService;
 
