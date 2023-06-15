@@ -41,10 +41,7 @@ namespace RestaurantAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<RestaurantDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("RestaurantConnectionString"));
-            });
+            services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
 
             var authenticationSettings = new AuthenticationSettings();
             services.AddSingleton(authenticationSettings);
@@ -73,7 +70,6 @@ namespace RestaurantAPI
             services.AddScoped<IAuthorizationHandler, ResourceOpertaionRequirementHandler>();
             services.AddScoped<IAuthorizationHandler, MinimumRestaurantsAmountRequirementHandler>();
             services.AddControllers().AddFluentValidation();
-            services.AddDbContext<RestaurantDbContext>();
             services.AddScoped<RestaurantSeeder>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<IRestaurantService, RestaurantService>();
@@ -104,7 +100,6 @@ namespace RestaurantAPI
             app.UseStaticFiles();
             app.UseCors("FrontEndClinet");
             seeder.Seed();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
