@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = "Bearer";
     options.DefaultScheme = "Bearer";
-    options.DefaultChallengeScheme = "Bearer"
+    options.DefaultChallengeScheme = "Bearer";
 }).AddJwtBearer(cfg =>
 {
     cfg.RequireHttpsMetadata = false;
