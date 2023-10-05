@@ -1,21 +1,12 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
-using RestaurantAPI.Entities;
-using RestaurantAPI.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using RestaurantAPI.Exceptions;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using RestaurantAPI.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using System.Security.Claims;
+using RestaurantAPI.Entities;
+using RestaurantAPI.Exceptions;
+using RestaurantAPI.Models;
 using RestaurantAPI.Services;
-using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace RestaurantAPI.services

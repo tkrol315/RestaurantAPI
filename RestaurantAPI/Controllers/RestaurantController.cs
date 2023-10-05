@@ -49,6 +49,7 @@ namespace RestaurantAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<PagedResult<RestaurantDto>> GetAll([FromQuery] RestaurantQuery query)
         {
             var restaurantsDtos = _restaurantService.GetAll(query);
