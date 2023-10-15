@@ -24,8 +24,8 @@ namespace RestaurantAPI.IntegrationTests
                     {
                         var dbContextOptions = services.SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<RestaurantDbContext>));
                         services.Remove(dbContextOptions);
-
                         services.AddDbContext<RestaurantDbContext>(options => options.UseInMemoryDatabase("RestaurantDb"));
+
                         services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
                         services.AddMvc(options => options.Filters.Add(new FakeUserFIlter()));
                     });
@@ -33,13 +33,13 @@ namespace RestaurantAPI.IntegrationTests
             _httpClient = _factory.CreateClient();
                
         }
-        private async Task SeedRestaurant(Restaurant restaurant)
+        private void  SeedRestaurant(Restaurant restaurant)
         {
             var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
             using var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetService<RestaurantDbContext>();
             dbContext.Restaurants.Add(restaurant);
-            await dbContext.SaveChangesAsync();
+            dbContext.SaveChanges();
 
         }
         [Theory]
@@ -117,7 +117,7 @@ namespace RestaurantAPI.IntegrationTests
                 ContactNumber = "123456789"
 
             };
-            await SeedRestaurant(restaurant);
+            SeedRestaurant(restaurant);
 
             //act
             var response = await _httpClient.DeleteAsync("/api/restaurant/" + restaurant.Id);
@@ -136,7 +136,7 @@ namespace RestaurantAPI.IntegrationTests
                 ContactNumber = "123456789"
 
             };
-            await SeedRestaurant(restaurant);
+            SeedRestaurant(restaurant);
             //act
             var response = await _httpClient.DeleteAsync("/api/restaurant/" + restaurant.Id);
             //assert
